@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="flexmark-util">
+    <ANNOTATIONS>
+      <root url="file://$PROJECT_DIR$/annotations/flexmark-util" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/flexmark-util.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

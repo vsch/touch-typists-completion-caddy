@@ -1,0 +1,66 @@
+<idea-plugin>
+    <id>com.vladsch.plugins.touchTypistsCompletionCaddy</id>
+    <name>Touch Typist's Completion Caddy</name>
+    <vendor email="vladimir.schneider@gmail.com" url="http://www.vladsch.com">Vladimir Schneider</vendor>
+    <category>Custom Languages</category>
+    <description><![CDATA[
+        <div xmlns="http://www.w3.org/1999/html">
+            <p>Adds option to disable auto-popup completions on a space to leave your already typed text as you
+                intended it.</p>
+            <p>Configure it in Editor &gt; General &gt; Code Completion settings (Preferences on OS X). Disable for
+                all languages or only for languages in a configurable list.</p>
+            <p>If you want to insert a suggestion for space disabled auto-pop then either use TAB or ENTER or
+                <strong>manually change the selected suggestion</strong> before using SPACE to insert it.</p>
+            <p>Prompted by delayed auto-popup completions in Kotlin after typing <code>var</code>, <code>val</code> or <code>null</code> and
+                inserting some random function starting with <code>var</code>, <code>val</code> or <code>null</code> after typing a space,
+                triggering a severe bout of Tourette&rsquo;s as a result.</p>
+
+        </div>
+        ]]>
+    </description>
+
+    <version>1.0</version>
+    <idea-version since-build="162.*"/>
+    <depends>com.intellij.modules.lang</depends>
+
+    <change-notes><![CDATA[
+        <div xmlns="http://www.w3.org/1999/html">
+            <h3>Version 1.0 - Initial Release</h3>
+            <ul>
+                <li>Add: basic auto-popup completion control on space</li>
+            </ul>
+        </div>
+        ]]></change-notes>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <lookup.charFilter implementation="com.vladsch.plugins.touchTypistsCompletionCaddy.CompletionCharFilter" order="first" id="TouchTypistsCompletionCaddy.completion_char_filter"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <codeCompletionConfigurable id="TouchTypistsCompletionCaddy" instance="com.vladsch.plugins.touchTypistsCompletionCaddy.ApplicationConfigurable"/>
+        <completion.contributor language="any" implementationClass="com.vladsch.plugins.touchTypistsCompletionCaddy.PluginCompletionContributor"/>
+    </extensions>
+
+    <application-components>
+<!--
+        <component>
+            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.Plugin</implementation-class>
+        </component>
+-->
+        <component>
+            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.ApplicationSettings</implementation-class>
+        </component>
+    </application-components>
+    
+    <project-components>
+        <component>
+            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.PluginProject</implementation-class>
+        </component>
+    </project-components>
+    
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>

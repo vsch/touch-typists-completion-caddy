@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="touch-typists-completion-caddy">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="archive" name="touch-typists-completion-caddy.jar">
+      <element id="module-output" name="touch-typists-completion-caddy" />
+      <element id="library" level="project" name="hamcrest-core-1.3" />
+      <element id="module-output" name="plugin-util" />
+      <element id="library" level="project" name="flexmark-util" />
+    </root>
+  </artifact>
+</component>

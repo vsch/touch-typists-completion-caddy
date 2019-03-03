@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Plugin Description" pattern="file:assets/markdown/description.md||file[touch-typists-completion-caddy]:assets/markdown/description.html" />
+</component>

@@ -1,0 +1,8 @@
+<component name="MarkdownNavigator.ProfileManager">
+  <settings default="" pdf-export="" plain-text-search-scope="Project Files">
+    <scope-profiles>
+      <element scope="Plugin Description" profile="Plugin Description" />
+      <element scope="Version" profile="Version" />
+    </scope-profiles>
+  </settings>
+</component>
