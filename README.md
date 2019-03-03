@@ -1,8 +1,17 @@
-## Touch Typist's Completion Caddy
+<img src="https://github.com/vsch/touch-typists-completion-caddy/raw/master/resources/META-INF/pluginIcon.svg" height="32" width="54" border="0" align="absmiddle" style="padding-bottom:5px"> Touch Typist's Completion Caddy
+==============================================================================================================================================================================================================================
 
-Adds control over what characters and for which prefixes, late to the game auto-popup completion
-will perform a completion or quietly f-off and leave your already typed text as you intended it.
+A plugin for [JetBrains] IDEs which adds option to disable auto-popup completions on a space to
+leave your already typed text as you intended it.
 
-Prompted by auto-popup completions in Kotlin triggering on `var`, `val` or `null` and completing
-on a typed space to insert some random function starting with `var`, `val` or `null` prefix. As
-a result triggering a severe bout of Tourette's.
+Configure it in Editor > General > Code Completion settings (Preferences on OS X). Disable for
+all languages or only for languages in a configurable list.
+
+If you want to insert a suggestion for space disabled auto-pop then either use TAB or ENTER or
+**manually change the selected suggestion** before using SPACE to insert it.
+
+Prompted by delayed auto-popup completions in Kotlin after typing `var`, `val` or `null` and
+inserting some random function starting with `var`, `val` or `null` after typing a space,
+triggering a severe bout of Tourette's as a result.
+
+[JetBrains]: http://www.jetbrains.com
