@@ -1,4 +1,4 @@
-<img src="https://github.com/vsch/touch-typists-completion-caddy/raw/master/resources/META-INF/pluginIcon.svg" height="32" width="54" border="0" align="absmiddle" style="padding-bottom:5px"> Touch Typist's Completion Caddy
+<img src="https://github.com/vsch/touch-typists-completion-caddy/raw/master/resources/META-INF/pluginIcon@2x.png" height="32" width="54" border="0" align="absmiddle" style="padding-bottom:5px"> Touch Typist's Completion Caddy
 ==============================================================================================================================================================================================================================
 
 A plugin for [JetBrains] IDEs which adds option to disable auto-popup completions on a space to
