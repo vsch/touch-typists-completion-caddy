@@ -6,7 +6,7 @@
     <description><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
             <p>Adds option to disable auto-popup completions on a space to leave your already typed text as you
-                intended it.</p>
+                intended.</p>
             <p>Configure it in Editor &gt; General &gt; Code Completion settings (Preferences on OS X). Disable for
                 all languages or only for languages in a configurable list.</p>
             <p>If you want to insert a suggestion for space disabled auto-pop then either use TAB or ENTER or
@@ -14,7 +14,6 @@
             <p>Prompted by delayed auto-popup completions in Kotlin after typing <code>var</code>, <code>val</code> or <code>null</code>
                 followed by a space, inserting some random function, triggering a severe bout of Tourette&rsquo;s as a
                 result.</p>
-
         </div>
         ]]>
     </description>

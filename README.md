@@ -2,7 +2,7 @@
 ==============================================================================================================================================================================================================================
 
 A plugin for [JetBrains] IDEs which adds option to disable auto-popup completions on a space to
-leave your already typed text as you intended it.
+leave your already typed text as you intended.
 
 Configure it in Editor > General > Code Completion settings (Preferences on OS X). Disable for
 all languages or only for languages in a configurable list.
