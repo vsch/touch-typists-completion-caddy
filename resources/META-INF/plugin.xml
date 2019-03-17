@@ -18,12 +18,18 @@
         ]]>
     </description>
 
-    <version>1.0</version>
+    <version>1.1</version>
     <idea-version since-build="162.*"/>
     <depends>com.intellij.modules.lang</depends>
 
     <change-notes><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
+            <h3>Version 1.1 - Bug Fix Release</h3>
+            <ul>
+                <li>Add: tracking of last typed character to prevent backspace followed by space from causing
+                    completion to be applied. Now will only complete on space if up/down is used to change
+                    selection in auto-popup completion.</li>
+            </ul>
             <h3>Version 1.0 - Initial Release</h3>
             <ul>
                 <li>Add: basic auto-popup completion control on space</li>

@@ -18,6 +18,7 @@ class CompletionCharFilter : CharFilter() {
 
         val item = lookup.currentItem ?: return null
         if (!lookup.isCompletion) return null
+        
         val editor = lookup.editor
         val project = editor.project ?: return null
         val pluginProject = PluginProject.getInstance(project)
