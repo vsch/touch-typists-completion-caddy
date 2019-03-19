@@ -30,7 +30,9 @@ class CompletionCharFilter : CharFilter() {
                 val element = item.psiElement
                 val language: Language? =
                     element?.language ?: if (editor is EditorEx) {
-                        val fileType = editor.virtualFile.fileType
+                        val virtualFile = editor.virtualFile ?: return null
+                        
+                        val fileType = virtualFile.fileType
                         if (fileType is LanguageFileType) {
                             fileType.language
                         } else {
