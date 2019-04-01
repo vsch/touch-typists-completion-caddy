@@ -5,7 +5,6 @@
       <element id="module-output" name="touch-typists-completion-caddy" />
       <element id="library" level="project" name="hamcrest-core-1.3" />
       <element id="library" level="project" name="flexmark-util" />
-      <element id="library" level="project" name="plugin-util" />
     </root>
   </artifact>
 </component>
