@@ -10,8 +10,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="plugin-util" />
     <orderEntry type="library" name="flexmark-util" level="project" />
     <orderEntry type="library" name="Kotlin" level="project" />
+    <orderEntry type="library" name="plugin-util" level="project" />
   </component>
 </module>
