@@ -41,16 +41,17 @@ import java.util.Set;
 @SuppressWarnings("WeakerAccess")
 public class ApplicationSettings implements BaseComponent, PersistentStateComponent<ApplicationSettings> {
     final static String[] EMPTY_STRINGS = new String[0];
-    
+
     private boolean disableAutoPopupCompletionsOnSpace = true;
     private boolean onlyFor = true;
     private String onlyForList = "Kotlin";
+    private boolean textBoxCompletions = false;
 
     @NotNull
     public static String cleanLanguageList(final String list) {
         String[] languageSet = getLanguageSet(list, false).toArray(EMPTY_STRINGS);
         Arrays.sort(languageSet);
-        
+
         StringBuilder text = new StringBuilder();
         String sep = "";
         for (String language : languageSet) {
@@ -69,7 +70,7 @@ public class ApplicationSettings implements BaseComponent, PersistentStateCompon
         for (String language : languageList) {
             String trimmed = language.trim();
             if (trimmed.isEmpty()) continue;
-            
+
             if (toLowerCase) {
                 languageSet.add(trimmed.toLowerCase());
             } else {
@@ -93,6 +94,14 @@ public class ApplicationSettings implements BaseComponent, PersistentStateCompon
 
     public void setOnlyFor(final boolean onlyFor) {
         this.onlyFor = onlyFor;
+    }
+
+    public boolean isTextBoxCompletions() {
+        return textBoxCompletions;
+    }
+
+    public void setTextBoxCompletions(final boolean textBoxCompletions) {
+        this.textBoxCompletions = textBoxCompletions;
     }
 
     public String getOnlyForList() {

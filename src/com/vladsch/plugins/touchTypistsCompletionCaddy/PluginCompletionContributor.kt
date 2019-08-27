@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.Editor
 
 class PluginCompletionContributor : CompletionContributor() {
     private val settings = ApplicationSettings.getInstance()
-    
+
     override fun fillCompletionVariants(parameters: CompletionParameters, result: CompletionResultSet) {
         // store completion parameters for our char completion filter
         if (settings.isDisableAutoPopupCompletionsOnSpace) {
@@ -16,7 +16,7 @@ class PluginCompletionContributor : CompletionContributor() {
     }
 
     override fun beforeCompletion(context: CompletionInitializationContext) {
-        
+        val tmp = 0
     }
 
     override fun handleEmptyLookup(parameters: CompletionParameters, editor: Editor?): String? {
@@ -28,6 +28,10 @@ class PluginCompletionContributor : CompletionContributor() {
     }
 
     override fun duringCompletion(context: CompletionInitializationContext) {
-        
+        if (settings.isDisableAutoPopupCompletionsOnSpace) {
+            val project = context.editor.project ?: return
+            val pluginProject = PluginProject.getInstance(project)
+            pluginProject.isAutoPopup = context.invocationCount == 0
+        }
     }
 }

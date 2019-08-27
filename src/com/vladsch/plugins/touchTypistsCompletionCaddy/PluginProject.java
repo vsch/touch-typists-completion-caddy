@@ -55,6 +55,7 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
     private boolean myUserItemSelection;
     private Character myLastCompletionChar = null;
     private boolean myLookupShown = false;
+    private boolean myIsAutoCompletion = false;
 
     public PluginProject(@NotNull Project project) {
         myProject = project;
@@ -112,6 +113,15 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
 
     public void setCompletionParameters(@Nullable final CompletionParameters completionParameters) {
         myCompletionParameters = completionParameters;
+        myIsAutoCompletion = completionParameters != null && completionParameters.isAutoPopup();
+    }
+
+    public boolean isAutoPopup() {
+        return myIsAutoCompletion;
+    }
+
+    public void setAutoPopup(final boolean popupCompletion) {
+        myIsAutoCompletion = popupCompletion;
     }
 
     public boolean isUserItemSelection() {

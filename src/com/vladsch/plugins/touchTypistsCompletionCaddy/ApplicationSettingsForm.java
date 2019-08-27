@@ -68,6 +68,7 @@ public class ApplicationSettingsForm implements Disposable {
     final private ApplicationSettings mySettings;
     JCheckBox myDisableAutoPopupCompletionsOnSpace;
     private JCheckBox myOnlyFor;
+    private JCheckBox myTextBoxCompletions;
     private TextFieldWithCompletion myOnlyForTextField;
     private JLabel myInstructionLabel;
 
@@ -90,6 +91,7 @@ public class ApplicationSettingsForm implements Disposable {
                         //component(myPrimaryCaretColor, i::primaryCaretColorRGB, i::primaryCaretColorRGB),
                         component(myDisableAutoPopupCompletionsOnSpace, i::isDisableAutoPopupCompletionsOnSpace, i::setDisableAutoPopupCompletionsOnSpace),
                         component(myOnlyFor, i::isOnlyFor, i::setOnlyFor),
+                        component(myTextBoxCompletions, i::isTextBoxCompletions, i::setTextBoxCompletions),
                         component(new SettableForm<ApplicationSettings>() {
                             @Override
                             public void reset(final ApplicationSettings settings) {
@@ -126,7 +128,7 @@ public class ApplicationSettingsForm implements Disposable {
         myEnabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.list.enabled.description", shortcut);
         myDisabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.list.disabled.description");
         myInstructionLabel.setEnabled(false);
-        
+
         myDisableAutoPopupCompletionsOnSpace.addActionListener(actionListener);
         myOnlyFor.addActionListener(actionListener);
 

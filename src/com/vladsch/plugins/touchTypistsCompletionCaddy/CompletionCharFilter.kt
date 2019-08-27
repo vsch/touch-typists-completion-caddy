@@ -7,7 +7,10 @@ import com.intellij.codeInsight.lookup.impl.LookupImpl
 import com.intellij.lang.Language
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.ex.EditorEx
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileTypes.LanguageFileType
+import com.intellij.openapi.fileTypes.PlainTextFileType
+import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.containers.ContainerUtil
 
 class CompletionCharFilter : CharFilter() {
@@ -18,20 +21,33 @@ class CompletionCharFilter : CharFilter() {
 
         val item = lookup.currentItem ?: return null
         if (!lookup.isCompletion) return null
-        
+
         val editor = lookup.editor
         val project = editor.project ?: return null
         val pluginProject = PluginProject.getInstance(project)
-        val completionParameters = pluginProject.completionParameters ?: return null
-        if (completionParameters.isAutoPopup && !pluginProject.isUserItemSelection) {
+
+        if (pluginProject.completionParameters == null) {
+            // this occurs when completion is in source non-editor
+            if (settings.isTextBoxCompletions && pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
+                val document = editor.document
+                val file = FileDocumentManager.getInstance().getFile(document)
+
+                if (file is LightVirtualFile && file.fileType == PlainTextFileType.INSTANCE && file.name == "Dummy.txt") {
+                    // non-text completion
+                    if (settings.isTextBoxCompletions && !pluginProject.isUserItemSelection) {
+                        return CharFilter.Result.HIDE_LOOKUP
+                    }
+                }
+            }
+        } else if (pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
             LOG.debug("CompletionCharFilter")
-            
+
             if (settings.isOnlyFor) {
                 val element = item.psiElement
                 val language: Language? =
                     element?.language ?: if (editor is EditorEx) {
                         val virtualFile = editor.virtualFile ?: return null
-                        
+
                         val fileType = virtualFile.fileType
                         if (fileType is LanguageFileType) {
                             fileType.language

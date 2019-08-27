@@ -56,7 +56,7 @@
               <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space"/>
             </properties>
           </component>
-          <grid id="e73b2" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="e73b2" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -64,29 +64,48 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="f0339" class="javax.swing.JCheckBox" binding="myOnlyFor">
+              <component id="2b94c" class="javax.swing.JCheckBox" binding="myTextBoxCompletions">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only"/>
-                  <toolTipText resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only.description"/>
+                  <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.text-box"/>
+                  <toolTipText resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.text-box.description"/>
                 </properties>
               </component>
-              <component id="7fed" class="com.intellij.util.textCompletion.TextFieldWithCompletion" binding="myOnlyForTextField" custom-create="true">
+              <grid id="b842a" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-              </component>
-              <component id="c9ecb" class="javax.swing.JLabel" binding="myInstructionLabel">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only.list.enabled.description"/>
-                </properties>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="f0339" class="javax.swing.JCheckBox" binding="myOnlyFor">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only"/>
+                      <toolTipText resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only.description"/>
+                    </properties>
+                  </component>
+                  <component id="7fed" class="com.intellij.util.textCompletion.TextFieldWithCompletion" binding="myOnlyForTextField" custom-create="true">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="c9ecb" class="javax.swing.JLabel" binding="myInstructionLabel">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text resource-bundle="com/vladsch/plugins/touchTypistsCompletionCaddy/localizations/strings" key="disable.auto.popup.completions.on.space.only.list.enabled.description"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </grid>
         </children>
