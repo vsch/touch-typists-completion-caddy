@@ -13,13 +13,13 @@
 
 ### Version 1.4 - Enhancement Release
 
-* Add: `In text boxes` option to stop completions on space in text boxes, such as VCS commit
-  message.
+* Add: `For plain text completions in text boxes (VCS commit message, etc.)` option to stop
+  completions on space in text boxes, such as VCS commit message.
 
 ### Version 1.3 - Bug Fix Release
 
-* Add: `resources/search/searchableOptions.xml` for full text search across all
-  configuration settings.
+* Add: `resources/search/searchableOptions.xml` for full text search across all configuration
+  settings.
 
 ### Version 1.2 - Bug Fix Release
 
