@@ -33,10 +33,10 @@ import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.vladsch.plugin.util.DelayedRunner;
+import com.vladsch.plugin.util.LazyFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -74,30 +74,25 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
 
         LookupManager lookupManager = LookupManager.getInstance(myProject);
         lookupManager.addPropertyChangeListener(this, myProject);
-        myDelayedRunner.addRunnable(() -> {
-            lookupManager.removePropertyChangeListener(this);
-        });
+        myDelayedRunner.addRunnable(() -> lookupManager.removePropertyChangeListener(this));
 
-        final IdeEventQueue.EventDispatcher eventDispatcher = new IdeEventQueue.EventDispatcher() {
-            @Override
-            public boolean dispatch(@NotNull final AWTEvent e) {
-                // we are only tracking it
-                if (myLookupShown && e instanceof KeyEvent && e.getID() == KeyEvent.KEY_PRESSED) {
-                    int keyCode = ((KeyEvent) e).getKeyCode();
-                    if (keyCode == VK_UP || keyCode == VK_DOWN) {
-                        if (LOG.isDebugEnabled()) LOG.debug("Up/Down 0x" + Integer.toString(keyCode, 16));
-                        myUserItemSelection = true;
-                    } else {
-                        char keyChar = ((KeyEvent) e).getKeyChar();
-                        if (COMPLETION_CHARS.indexOf(keyChar) == -1) {
-                            if (LOG.isDebugEnabled()) LOG.debug("Other keyCode 0x" + Integer.toString(keyCode, 16));
-                            myLastCompletionChar = null;
-                            myUserItemSelection = false;
-                        }
+        final IdeEventQueue.EventDispatcher eventDispatcher = e -> {
+            // we are only tracking it
+            if (myLookupShown && e instanceof KeyEvent && e.getID() == KeyEvent.KEY_PRESSED) {
+                int keyCode = ((KeyEvent) e).getKeyCode();
+                if (keyCode == VK_UP || keyCode == VK_DOWN) {
+                    if (LOG.isDebugEnabled()) LOG.debug("Up/Down 0x" + Integer.toString(keyCode, 16));
+                    myUserItemSelection = true;
+                } else {
+                    char keyChar = ((KeyEvent) e).getKeyChar();
+                    if (COMPLETION_CHARS.indexOf(keyChar) == -1) {
+                        if (LOG.isDebugEnabled()) LOG.debug("Other keyCode 0x" + Integer.toString(keyCode, 16));
+                        myLastCompletionChar = null;
+                        myUserItemSelection = false;
                     }
                 }
-                return false;
             }
+            return false;
         };
 
         IdeEventQueue.getInstance().addDispatcher(eventDispatcher, this);
@@ -215,7 +210,10 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
         return this.getClass().getName();
     }
 
+    final private static LazyFunction<Project, PluginProject> DEFAULT = new LazyFunction<>(PluginProject::new);
+
     public static PluginProject getInstance(@NotNull Project project) {
+        if (project.isDefault()) return DEFAULT.getValue(project);
         return project.getComponent(PluginProject.class);
     }
 }

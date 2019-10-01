@@ -32,6 +32,8 @@ import com.intellij.openapi.editor.colors.impl.DefaultColorsScheme;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.keymap.KeymapUtil;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.ui.TextFieldWithAutoCompletion;
+import com.intellij.ui.TextFieldWithAutoCompletionListProvider;
 import com.intellij.util.textCompletion.DefaultTextCompletionValueDescriptor;
 import com.intellij.util.textCompletion.TextCompletionValueDescriptor;
 import com.intellij.util.textCompletion.TextFieldWithCompletion;
@@ -48,7 +50,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
@@ -71,6 +75,10 @@ public class ApplicationSettingsForm implements Disposable {
     private JCheckBox myTextBoxCompletions;
     private TextFieldWithCompletion myOnlyForTextField;
     private JLabel myInstructionLabel;
+    private JRadioButton mySpaceOnly;
+    private JRadioButton mySpaceAndAll;
+    private JRadioButton mySpaceAnd;
+    private JTextField mySpaceAndList;
 
     private final SettingsComponents<ApplicationSettings> components;
     private final EditingCommitter myEditingCommitter;
@@ -85,29 +93,34 @@ public class ApplicationSettingsForm implements Disposable {
 
         components = new SettingsComponents<ApplicationSettings>() {
             @Override
-            protected Settable[] createComponents(ApplicationSettings i) {
+            protected Settable<ApplicationSettings>[] createComponents(@NotNull ApplicationSettings i) {
+                //noinspection unchecked
                 return new Settable[] {
                         //component(AutoLineModeType.ADAPTER, myAutoLineMode, i::getAutoLineMode, i::setAutoLineMode),
                         //component(myPrimaryCaretColor, i::primaryCaretColorRGB, i::primaryCaretColorRGB),
                         component(myDisableAutoPopupCompletionsOnSpace, i::isDisableAutoPopupCompletionsOnSpace, i::setDisableAutoPopupCompletionsOnSpace),
                         component(myOnlyFor, i::isOnlyFor, i::setOnlyFor),
                         component(myTextBoxCompletions, i::isTextBoxCompletions, i::setTextBoxCompletions),
+                        component(mySpaceOnly, i::isSpaceOnly, i::setSpaceOnly),
+                        component(mySpaceAndAll, i::isSpaceAndAll, i::setSpaceAndAll),
+                        component(mySpaceAnd, i::isSpaceAnd, i::setSpaceAnd),
+                        component(mySpaceAndList, i::getSpaceAndList, i::setSpaceAndList),
                         component(new SettableForm<ApplicationSettings>() {
                             @Override
-                            public void reset(final ApplicationSettings settings) {
+                            public void reset(@NotNull final ApplicationSettings settings) {
                                 String text = ApplicationSettings.cleanLanguageList(settings.getOnlyForList());
                                 myOnlyForTextField.setText(text);
                             }
 
                             @Override
-                            public void apply(final ApplicationSettings settings) {
+                            public void apply(@NotNull final ApplicationSettings settings) {
                                 String languageList = ApplicationSettings.cleanLanguageList(myOnlyForTextField.getText());
                                 settings.setOnlyForList(languageList);
                                 myOnlyForTextField.setText(languageList);
                             }
 
                             @Override
-                            public boolean isModified(final ApplicationSettings settings) {
+                            public boolean isModified(@NotNull final ApplicationSettings settings) {
                                 String languageList = ApplicationSettings.cleanLanguageList(settings.getOnlyForList());
                                 String fieldText = ApplicationSettings.cleanLanguageList(myOnlyForTextField.getText());
                                 return !languageList.equals(fieldText);
@@ -117,20 +130,19 @@ public class ApplicationSettingsForm implements Disposable {
             }
         };
 
-        final ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                updateOptions(false);
-            }
-        };
+        final ActionListener actionListener = e -> updateOptions(false);
 
         String shortcut = KeymapUtil.getFirstKeyboardShortcutText(ActionManager.getInstance().getAction(IdeActions.ACTION_CODE_COMPLETION));
-        myEnabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.list.enabled.description", shortcut);
-        myDisabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.list.disabled.description");
+        myEnabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.for.list.enabled.description", shortcut);
+        myDisabledInstructions = Bundle.message("disable.auto.popup.completions.on.space.only.for.list.disabled.description");
         myInstructionLabel.setEnabled(false);
 
         myDisableAutoPopupCompletionsOnSpace.addActionListener(actionListener);
         myOnlyFor.addActionListener(actionListener);
+        mySpaceOnly.addActionListener(actionListener);
+        mySpaceAndAll.addActionListener(actionListener);
+        mySpaceAnd.addActionListener(actionListener);
+        mySpaceAndList.addActionListener(actionListener);
 
         myVersion.setText(String.format("(%s: %s)", Bundle.message("settings.version.label"), Plugin.fullProductVersion()));
 
@@ -167,13 +179,20 @@ public class ApplicationSettingsForm implements Disposable {
         IdeEventQueue.getInstance().removeDispatcher(myEditingCommitter);
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("unused")
     void updateOptions(boolean typeChanged) {
-        myOnlyFor.setEnabled(myDisableAutoPopupCompletionsOnSpace.isSelected());
+        boolean enabled = myDisableAutoPopupCompletionsOnSpace.isSelected();
+        myOnlyFor.setEnabled(enabled);
         myOnlyForTextField.setEnabled(myOnlyFor.isEnabled() && myOnlyFor.isSelected());
         myInstructionLabel.setText(myOnlyForTextField.isEnabled() ? myEnabledInstructions : myDisabledInstructions);
+
+        mySpaceOnly.setEnabled(enabled);
+        mySpaceAndAll.setEnabled(enabled);
+        mySpaceAnd.setEnabled(enabled);
+        mySpaceAndList.setEnabled(mySpaceAnd.isEnabled() && mySpaceAnd.isSelected());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void updateValueProvider(String currentText) {
         if (myValuesCompletionProvider == null) {
             Collection<Language> languages = Language.getRegisteredLanguages();
@@ -213,9 +232,9 @@ public class ApplicationSettingsForm implements Disposable {
                 myValuesCompletionProvider, "", true, true, true, true);
     }
 
-    private class EditingCommitter implements IdeEventQueue.EventDispatcher {
+    private static class EditingCommitter implements IdeEventQueue.EventDispatcher {
         @Override
-        public boolean dispatch(AWTEvent e) {
+        public boolean dispatch(@NotNull AWTEvent e) {
             if (e instanceof KeyEvent && e.getID() == KeyEvent.KEY_PRESSED && ((KeyEvent) e).getKeyCode() == KeyEvent.VK_ENTER) {
                 if ((((KeyEvent) e).getModifiers() & ~(InputEvent.CTRL_DOWN_MASK | InputEvent.CTRL_MASK)) == 0) {
                     Component owner = UIUtil.findParentByCondition(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), component -> component instanceof JTable);

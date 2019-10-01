@@ -30,6 +30,7 @@ class PluginCompletionContributor : CompletionContributor() {
     override fun duringCompletion(context: CompletionInitializationContext) {
         if (settings.isDisableAutoPopupCompletionsOnSpace) {
             val project = context.editor.project ?: return
+            if (project.isDefault) return
             val pluginProject = PluginProject.getInstance(project)
             pluginProject.isAutoPopup = context.invocationCount == 0
         }

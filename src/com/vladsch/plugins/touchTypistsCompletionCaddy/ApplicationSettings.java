@@ -45,7 +45,14 @@ public class ApplicationSettings implements BaseComponent, PersistentStateCompon
     private boolean disableAutoPopupCompletionsOnSpace = true;
     private boolean onlyFor = true;
     private String onlyForList = "Kotlin";
+    private int onSpace = OnSpaceType.DEFAULT.intValue;
+
+    private String spaceAndList = "";
     private boolean textBoxCompletions = false;
+
+    public OnSpaceType getOnSpaceType() {
+        return OnSpaceType.ADAPTER.get(onSpace);
+    }
 
     @NotNull
     public static String cleanLanguageList(final String list) {
@@ -106,6 +113,38 @@ public class ApplicationSettings implements BaseComponent, PersistentStateCompon
 
     public String getOnlyForList() {
         return onlyForList;
+    }
+
+    public boolean isSpaceOnly() {
+        return onSpace == OnSpaceType.SPACE_ONLY.intValue;
+    }
+
+    public void setSpaceOnly(final boolean spaceOnly) {
+        if (spaceOnly) onSpace = OnSpaceType.SPACE_ONLY.intValue;
+    }
+
+    public boolean isSpaceAndAll() {
+        return onSpace == OnSpaceType.SPACE_AND_ALL.intValue;
+    }
+
+    public void setSpaceAndAll(final boolean spaceAndAll) {
+        if (spaceAndAll) onSpace = OnSpaceType.SPACE_AND_ALL.intValue;
+    }
+
+    public boolean isSpaceAnd() {
+        return onSpace == OnSpaceType.SPACE_AND.intValue;
+    }
+
+    public void setSpaceAnd(final boolean spaceAnd) {
+        if (spaceAnd) onSpace = OnSpaceType.SPACE_AND.intValue;
+    }
+
+    public String getSpaceAndList() {
+        return spaceAndList;
+    }
+
+    public void setSpaceAndList(final String spaceAndList) {
+        this.spaceAndList = spaceAndList;
     }
 
     public void setOnlyForList(final String onlyForList) {

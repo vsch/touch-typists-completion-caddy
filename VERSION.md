@@ -4,12 +4,20 @@
 
 ### Version History
 - [Touch Typist's Completion Caddy](#touch-typists-completion-caddy)
+    - [Version 1.5 - Enhancement Release](#version-15---enhancement-release)
     - [Version 1.4 - Enhancement Release](#version-14---enhancement-release)
     - [Version 1.3 - Bug Fix Release](#version-13---bug-fix-release)
     - [Version 1.2 - Bug Fix Release](#version-12---bug-fix-release)
     - [Version 1.1 - Bug Fix Release](#version-11---bug-fix-release)
     - [Version 1.0 - Initial Release](#version-10---initial-release)
 
+
+### Version 1.5 - Enhancement Release
+
+* Add: customization of characters on which to disable auto-pop completions in addition to space
+* Fix: in 2019.x completion in language text generated exception
+* Fix: detection of plain text completion to handle completion on space before the options are
+  displayed during fast typing.
 
 ### Version 1.4 - Enhancement Release
 

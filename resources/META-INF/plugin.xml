@@ -18,12 +18,17 @@
         ]]>
     </description>
 
-    <version>1.4</version>
+    <version>1.5</version>
     <idea-version since-build="162.*"/>
     <depends>com.intellij.modules.lang</depends>
 
     <change-notes><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
+            <h3>Version 1.5 - Enhancement Release</h3>
+            <ul>
+                <li>Fix: detection of plain text completion to handle completion on space before the options are
+                    displayed during fast typing.</li>
+            </ul>
             <h3>Version 1.4 - Enhancement Release</h3>
             <ul>
                 <li>Add: <code>For plain text completions in text boxes (VCS commit message, etc.)</code> option to stop

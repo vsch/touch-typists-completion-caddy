@@ -17,18 +17,26 @@ class CompletionCharFilter : CharFilter() {
     private val settings = ApplicationSettings.getInstance()
 
     override fun acceptChar(c: Char, prefixLength: Int, lookup: Lookup): CharFilter.Result? {
-        if (c != ' ' || !settings.isDisableAutoPopupCompletionsOnSpace) return null
+        if (!settings.isDisableAutoPopupCompletionsOnSpace) return null
+        if (!settings.onSpaceType.isEnabledOn(c, settings.spaceAndList)) return null
 
         val item = lookup.currentItem ?: return null
         if (!lookup.isCompletion) return null
 
         val editor = lookup.editor
         val project = editor.project ?: return null
-        val pluginProject = PluginProject.getInstance(project)
 
-        if (pluginProject.completionParameters == null) {
-            // this occurs when completion is in source non-editor
-            if (settings.isTextBoxCompletions && pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
+        // default project for text fields in settings for non-project configurable
+        if (project.isDefault) return null
+
+        val pluginProject = PluginProject.getInstance(project)
+//        val completionParameters = pluginProject.completionParameters
+
+        if (pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
+            LOG.debug("CompletionCharFilter")
+
+            if (settings.isTextBoxCompletions) {
+                // test for text box completions
                 val document = editor.document
                 val file = FileDocumentManager.getInstance().getFile(document)
 
@@ -37,11 +45,11 @@ class CompletionCharFilter : CharFilter() {
                     if (settings.isTextBoxCompletions && !pluginProject.isUserItemSelection) {
                         return CharFilter.Result.HIDE_LOOKUP
                     }
+                    return null
                 }
             }
-        } else if (pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
-            LOG.debug("CompletionCharFilter")
 
+            // now for normal completions
             if (settings.isOnlyFor) {
                 val element = item.psiElement
                 val language: Language? =
