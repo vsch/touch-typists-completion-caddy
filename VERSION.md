@@ -15,7 +15,7 @@
 ### Version 1.5 - Enhancement Release
 
 * Add: customization of characters on which to disable auto-pop completions in addition to space
-* Fix: in 2019.x completion in language text generated exception
+* Fix: in 2019.x completion in settings language text generated exception
 * Fix: detection of plain text completion to handle completion on space before the options are
   displayed during fast typing.
 
