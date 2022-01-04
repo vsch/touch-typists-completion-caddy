@@ -2,7 +2,6 @@
     <id>com.vladsch.plugins.touchTypistsCompletionCaddy</id>
     <name>Touch Typist's Completion Caddy</name>
     <vendor email="vladimir.schneider@gmail.com" url="http://www.vladsch.com">Vladimir Schneider</vendor>
-    <category>Custom Languages</category>
     <description><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
             <p>Adds option to disable auto-popup completions on a space to leave your already typed text as you
@@ -18,12 +17,16 @@
         ]]>
     </description>
 
-    <version>1.5</version>
-    <idea-version since-build="162.*"/>
+    <version>1.6</version>
+    <idea-version since-build="183.*"/>
     <depends>com.intellij.modules.lang</depends>
 
     <change-notes><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
+            <h3>Version 1.6 - Compatibility Release</h3>
+            <ul>
+                <li>Fix: 2021 configurable exception</li>
+            </ul>
             <h3>Version 1.5 - Enhancement Release</h3>
             <ul>
                 <li>Add: customization of characters on which to disable auto-pop completions in addition to space</li>

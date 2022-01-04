@@ -35,8 +35,8 @@ public class ApplicationConfigurable implements SearchableConfigurable, CodeComp
     @Nullable private ApplicationSettingsForm myForm = null;
     @NotNull final private ApplicationSettings myApplicationSettings;
 
-    public ApplicationConfigurable(@NotNull ApplicationSettings applicationSettings) {
-        myApplicationSettings = applicationSettings;
+    public ApplicationConfigurable() {
+        myApplicationSettings = ApplicationSettings.getInstance();
     }
 
     @NotNull

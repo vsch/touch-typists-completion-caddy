@@ -4,13 +4,18 @@
 
 ### Version History
 - [Touch Typist's Completion Caddy](#touch-typists-completion-caddy)
-    - [Version 1.5 - Enhancement Release](#version-15---enhancement-release)
-    - [Version 1.4 - Enhancement Release](#version-14---enhancement-release)
-    - [Version 1.3 - Bug Fix Release](#version-13---bug-fix-release)
-    - [Version 1.2 - Bug Fix Release](#version-12---bug-fix-release)
-    - [Version 1.1 - Bug Fix Release](#version-11---bug-fix-release)
-    - [Version 1.0 - Initial Release](#version-10---initial-release)
+  - [Version 1.6 - Compatibility Release](#version-16---compatibility-release)
+  - [Version 1.5 - Enhancement Release](#version-15---enhancement-release)
+  - [Version 1.4 - Enhancement Release](#version-14---enhancement-release)
+  - [Version 1.3 - Bug Fix Release](#version-13---bug-fix-release)
+  - [Version 1.2 - Bug Fix Release](#version-12---bug-fix-release)
+  - [Version 1.1 - Bug Fix Release](#version-11---bug-fix-release)
+  - [Version 1.0 - Initial Release](#version-10---initial-release)
 
+
+### Version 1.6 - Compatibility Release
+
+* Fix: 2021 configurable exception
 
 ### Version 1.5 - Enhancement Release
 

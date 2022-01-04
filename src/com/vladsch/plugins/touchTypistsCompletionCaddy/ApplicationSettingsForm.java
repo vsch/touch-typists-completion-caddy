@@ -73,7 +73,6 @@ public class ApplicationSettingsForm implements Disposable {
     JCheckBox myDisableAutoPopupCompletionsOnSpace;
     private JCheckBox myOnlyFor;
     private JCheckBox myTextBoxCompletions;
-    private TextFieldWithCompletion myOnlyForTextField;
     private JLabel myInstructionLabel;
     private JRadioButton mySpaceOnly;
     private JRadioButton mySpaceAndAll;
@@ -83,6 +82,7 @@ public class ApplicationSettingsForm implements Disposable {
     private final SettingsComponents<ApplicationSettings> components;
     private final EditingCommitter myEditingCommitter;
 
+    private TextFieldWithCompletion myOnlyForTextField;
     private TextCompletionValueDescriptor<Language> myTextCompletionValueDescriptor = null;
     private ValuesCompletionProvider<Language> myValuesCompletionProvider = null;
     private String myDisabledInstructions;
