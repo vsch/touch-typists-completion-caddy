@@ -16,8 +16,6 @@ Prompted by delayed auto-popup completions in Kotlin after typing `var`, `val` o
 followed by a space, inserting some random function, triggering a severe bout of Tourette's as a
 result.
 
-IDE versions 2019.3 added
-
-[JetBrains]: http://www.jetbrains.com
+[JetBrains]: https://www.jetbrains.com
 [JetBrains plugin page]: https://plugins.jetbrains.com/plugin/12043-touch-typist-s-completion-caddy
 
