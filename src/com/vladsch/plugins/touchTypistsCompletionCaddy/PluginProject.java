@@ -22,14 +22,16 @@
 package com.vladsch.plugins.touchTypistsCompletionCaddy;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupEvent;
 import com.intellij.codeInsight.lookup.LookupListener;
-import com.intellij.codeInsight.lookup.LookupManager;
+import com.intellij.codeInsight.lookup.LookupManagerListener;
 import com.intellij.codeInsight.lookup.impl.LookupImpl;
 import com.intellij.ide.IdeEventQueue;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.vladsch.plugin.util.DelayedRunner;
@@ -38,43 +40,35 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import static java.awt.event.KeyEvent.VK_DOWN;
 import static java.awt.event.KeyEvent.VK_UP;
 
-public class PluginProject implements BaseComponent, Disposable, PropertyChangeListener {
-    private static final Logger LOG = Logger.getInstance("com.vladsch.plugins.touchTypistsCompletionCaddy");
-    public static final String COMPLETION_CHARS = " \t\u0009\r\n";
+public class PluginProject implements Disposable, LookupManagerListener {
+    public static final String PLUGIN_ID = "com.vladsch.plugins.touchTypistsCompletionCaddy";
+    private static final Logger LOG = Logger.getInstance(PLUGIN_ID);
+    public static final String COMPLETION_CHARS = " \t\r\n";
+    final private static LazyFunction<Project, PluginProject> DEFAULT = new LazyFunction<>(PluginProject::new);
 
-    private final @NotNull Project myProject;
+    public static PluginProject getInstance(@NotNull Project project) {
+        if (project.isDefault()) return DEFAULT.getValue(project);
+        return project.getService(PluginProject.class);
+    }
+
     private final @NotNull DelayedRunner myDelayedRunner;
     private @Nullable CompletionParameters myCompletionParameters;
     private @Nullable ApplicationSettings mySettings;
     private boolean myUserItemSelection;
-    private Character myLastCompletionChar = null;
     private boolean myLookupShown = false;
     private boolean myIsAutoCompletion = false;
 
     public PluginProject(@NotNull Project project) {
-        myProject = project;
         myDelayedRunner = new DelayedRunner();
         myUserItemSelection = false;
-    }
 
-    @Override
-    public void dispose() {
-        myDelayedRunner.runAll();
-    }
-
-    @Override
-    public void initComponent() {
         mySettings = ApplicationSettings.getInstance();
 
-        LookupManager lookupManager = LookupManager.getInstance(myProject);
-        lookupManager.addPropertyChangeListener(this, myProject);
-        myDelayedRunner.addRunnable(() -> lookupManager.removePropertyChangeListener(this));
+        project.getMessageBus().connect(this).subscribe(LookupManagerListener.TOPIC, this);
 
         final IdeEventQueue.EventDispatcher eventDispatcher = e -> {
             // we are only tracking it
@@ -87,7 +81,6 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
                     char keyChar = ((KeyEvent) e).getKeyChar();
                     if (COMPLETION_CHARS.indexOf(keyChar) == -1) {
                         if (LOG.isDebugEnabled()) LOG.debug("Other keyCode 0x" + Integer.toString(keyCode, 16));
-                        myLastCompletionChar = null;
                         myUserItemSelection = false;
                     }
                 }
@@ -96,11 +89,10 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
         };
 
         IdeEventQueue.getInstance().addDispatcher(eventDispatcher, this);
-        myDelayedRunner.addRunnable(() -> {
-            IdeEventQueue.getInstance().removeDispatcher(eventDispatcher);
-        });
+        myDelayedRunner.addRunnable(() -> IdeEventQueue.getInstance().removeDispatcher(eventDispatcher));
     }
 
+    @SuppressWarnings("unused")
     @Nullable
     public CompletionParameters getCompletionParameters() {
         return myCompletionParameters;
@@ -109,6 +101,28 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
     public void setCompletionParameters(@Nullable final CompletionParameters completionParameters) {
         myCompletionParameters = completionParameters;
         myIsAutoCompletion = completionParameters != null && completionParameters.isAutoPopup();
+    }
+
+    public static IdeaPluginDescriptor getPluginDescriptor() {
+        IdeaPluginDescriptor[] plugins = PluginManager.getPlugins();
+        for (IdeaPluginDescriptor plugin : plugins) {
+            if (PLUGIN_ID.equals(plugin.getPluginId().getIdString())) {
+                return plugin;
+            }
+        }
+
+        throw new IllegalStateException("Unexpected, plugin cannot find its own plugin descriptor");
+    }
+
+    public static String fullProductVersion() {
+        IdeaPluginDescriptor pluginDescriptor = getPluginDescriptor();
+        return pluginDescriptor.getVersion();
+    }
+
+    @Override
+    public void dispose() {
+        myDelayedRunner.runAll();
+        mySettings = null;
     }
 
     public boolean isAutoPopup() {
@@ -123,97 +137,47 @@ public class PluginProject implements BaseComponent, Disposable, PropertyChangeL
         return myUserItemSelection;
     }
 
-    public Character getLastCompletionChar() {
-        return myLastCompletionChar;
-    }
-
-    public void setLastCompletionChar(final Character lastCompletionChar) {
-        if (LOG.isDebugEnabled()) LOG.debug("Char typed " + Character.getName(lastCompletionChar));
-        myLastCompletionChar = lastCompletionChar;
-        myUserItemSelection = false;
-    }
-
     @Override
-    public void propertyChange(final PropertyChangeEvent evt) {
+    public void activeLookupChanged(@Nullable Lookup oldLookup, @Nullable Lookup newLookup) {
         if (mySettings != null && mySettings.isDisableAutoPopupCompletionsOnSpace()) {
-            if (evt.getPropertyName().equals(LookupManager.PROP_ACTIVE_LOOKUP)) {
-                Object newValue = evt.getNewValue();
-                if (newValue instanceof LookupImpl) {
-                    final LookupImpl lookup = (LookupImpl) newValue;
-                    myUserItemSelection = false;
-                    myLastCompletionChar = null;
+            if (newLookup instanceof LookupImpl) {
+                final LookupImpl lookup = (LookupImpl) newLookup;
+                myUserItemSelection = false;
 
-                    lookup.addLookupListener(new LookupListener() {
-                        boolean currentItemChanged = false;
+                lookup.addLookupListener(new LookupListener() {
+                    @Override
+                    public void lookupShown(@NotNull final LookupEvent event) {
+                        myLookupShown = true;
+                    }
 
-                        @Override
-                        public void lookupShown(@NotNull final LookupEvent event) {
-                            myLookupShown = true;
-                        }
+                    @Override
+                    public boolean beforeItemSelected(@NotNull final LookupEvent event) {
+                        if (LOG.isDebugEnabled()) LOG.debug("beforeItemSelected");
+                        return true;
+                    }
 
-                        @Override
-                        public boolean beforeItemSelected(@NotNull final LookupEvent event) {
-                            if (LOG.isDebugEnabled()) LOG.debug("beforeItemSelected");
-                            return true;
-                        }
+                    @Override
+                    public void itemSelected(@NotNull final LookupEvent event) {
+                        if (LOG.isDebugEnabled()) LOG.debug("itemSelected");
+                        lookupClosed();
+                    }
 
-                        @Override
-                        public void itemSelected(@NotNull final LookupEvent event) {
-                            if (LOG.isDebugEnabled()) LOG.debug("itemSelected");
-                            lookupClosed();
-                        }
+                    @Override
+                    public void lookupCanceled(@NotNull final LookupEvent event) {
+                        if (LOG.isDebugEnabled()) LOG.debug("lookupCancelled");
+                        lookupClosed();
+                    }
 
-                        @Override
-                        public void lookupCanceled(@NotNull final LookupEvent event) {
-                            if (LOG.isDebugEnabled()) LOG.debug("lookupCancelled");
-                            lookupClosed();
-                        }
-
-                        @Override
-                        public void currentItemChanged(@NotNull final LookupEvent event) {
-
-                        }
-
-                        @Override
-                        public void uiRefreshed() {
-
-                        }
-
-                        @Override
-                        public void focusDegreeChanged() {
-
-                        }
-
-                        private void lookupClosed() {
-                            myLookupShown = false;
-                            myCompletionParameters = null;
-                            ApplicationManager.getApplication().assertIsDispatchThread();
-                            lookup.removeLookupListener(this);
-                        }
-                    });
-                }
+                    private void lookupClosed() {
+                        myLookupShown = false;
+                        myCompletionParameters = null;
+                        ApplicationManager.getApplication().assertIsDispatchThread();
+                        lookup.removeLookupListener(this);
+                    }
+                });
             }
         } else {
             myCompletionParameters = null;
         }
-    }
-
-    @Override
-    public void disposeComponent() {
-        mySettings = null;
-        myDelayedRunner.runAll();
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return this.getClass().getName();
-    }
-
-    final private static LazyFunction<Project, PluginProject> DEFAULT = new LazyFunction<>(PluginProject::new);
-
-    public static PluginProject getInstance(@NotNull Project project) {
-        if (project.isDefault()) return DEFAULT.getValue(project);
-        return project.getComponent(PluginProject.class);
     }
 }

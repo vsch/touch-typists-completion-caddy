@@ -4,6 +4,7 @@
 
 ### Version History
 - [Touch Typist's Completion Caddy](#touch-typists-completion-caddy)
+  - [Version 1.7.0 - Compatibility Release (2023-04-22)](#version-170---compatibility-release-2023-04-22)
   - [Version 1.6 - Compatibility Release](#version-16---compatibility-release)
   - [Version 1.5 - Enhancement Release](#version-15---enhancement-release)
   - [Version 1.4 - Enhancement Release](#version-14---enhancement-release)
@@ -12,6 +13,12 @@
   - [Version 1.1 - Bug Fix Release](#version-11---bug-fix-release)
   - [Version 1.0 - Initial Release](#version-10---initial-release)
 
+
+### Version 1.7.0 - Compatibility Release (2023-04-22)
+
+* Fix: deprecated API usage. 
+* Change: minimum IDE version to 2020.3
+* Fix: migrate to gradle build system.
 
 ### Version 1.6 - Compatibility Release
 

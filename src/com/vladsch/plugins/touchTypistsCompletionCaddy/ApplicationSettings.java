@@ -22,7 +22,6 @@
 package com.vladsch.plugins.touchTypistsCompletionCaddy;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -39,8 +38,12 @@ import java.util.Set;
         storages = @Storage("touch-typists-completion-caddy-settings.xml")
 )
 @SuppressWarnings("WeakerAccess")
-public class ApplicationSettings implements BaseComponent, PersistentStateComponent<ApplicationSettings> {
+public class ApplicationSettings implements PersistentStateComponent<ApplicationSettings> {
     final static String[] EMPTY_STRINGS = new String[0];
+
+    public static ApplicationSettings getInstance() {
+        return ApplicationManager.getApplication().getService(ApplicationSettings.class);
+    }
 
     private boolean disableAutoPopupCompletionsOnSpace = true;
     private boolean onlyFor = true;
@@ -158,20 +161,5 @@ public class ApplicationSettings implements BaseComponent, PersistentStateCompon
 
     public void loadState(@NotNull ApplicationSettings applicationSettings) {
         XmlSerializerUtil.copyBean(applicationSettings, this);
-    }
-
-    public void initComponent() {
-    }
-
-    public void disposeComponent() {
-    }
-
-    @NotNull
-    public String getComponentName() {
-        return this.getClass().getName();
-    }
-
-    public static ApplicationSettings getInstance() {
-        return ApplicationManager.getApplication().getComponent(ApplicationSettings.class);
     }
 }

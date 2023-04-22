@@ -16,7 +16,6 @@ class PluginCompletionContributor : CompletionContributor() {
     }
 
     override fun beforeCompletion(context: CompletionInitializationContext) {
-        val tmp = 0
     }
 
     override fun handleEmptyLookup(parameters: CompletionParameters, editor: Editor?): String? {

@@ -39,8 +39,8 @@ public enum OnSpaceType implements ComboBoxAdaptable<OnSpaceType> {
         this.displayName = displayName;
     }
 
-    public static OnSpaceType DEFAULT = SPACE_ONLY;
-    public static Static<OnSpaceType> ADAPTER = new Static<>(new ComboBoxAdapterImpl<>(DEFAULT));
+    public static final OnSpaceType DEFAULT = SPACE_ONLY;
+    public static final Static<OnSpaceType> ADAPTER = new Static<>(new ComboBoxAdapterImpl<>(DEFAULT));
 
     public boolean isEnabledOn(char c, @NotNull String spaceAndList) {
         switch (this) {

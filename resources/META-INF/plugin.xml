@@ -17,8 +17,8 @@
         ]]>
     </description>
 
-    <version>1.6</version>
-    <idea-version since-build="183.*"/>
+    <version>1.7.0</version>
+    <idea-version since-build="203"/>
     <depends>com.intellij.modules.lang</depends>
 
     <change-notes><![CDATA[
@@ -62,32 +62,12 @@
         ]]></change-notes>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
         <lookup.charFilter implementation="com.vladsch.plugins.touchTypistsCompletionCaddy.CompletionCharFilter" order="first" id="TouchTypistsCompletionCaddy.completion_char_filter"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
         <codeCompletionConfigurable id="TouchTypistsCompletionCaddy" instance="com.vladsch.plugins.touchTypistsCompletionCaddy.ApplicationConfigurable"/>
         <completion.contributor language="any" implementationClass="com.vladsch.plugins.touchTypistsCompletionCaddy.PluginCompletionContributor"/>
+        <applicationService serviceImplementation="com.vladsch.plugins.touchTypistsCompletionCaddy.ApplicationSettings"/>
+        <projectService serviceImplementation="com.vladsch.plugins.touchTypistsCompletionCaddy.PluginProject"/>
     </extensions>
-
-    <application-components>
-<!--
-        <component>
-            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.Plugin</implementation-class>
-        </component>
--->
-        <component>
-            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.ApplicationSettings</implementation-class>
-        </component>
-    </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>com.vladsch.plugins.touchTypistsCompletionCaddy.PluginProject</implementation-class>
-        </component>
-    </project-components>
 
     <actions>
         <!-- Add your actions here -->

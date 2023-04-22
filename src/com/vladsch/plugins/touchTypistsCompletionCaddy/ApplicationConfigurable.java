@@ -21,7 +21,6 @@
 package com.vladsch.plugins.touchTypistsCompletionCaddy;
 
 import com.intellij.application.options.CodeCompletionOptionsCustomSection;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.util.Disposer;
 import org.jetbrains.annotations.Nls;
@@ -43,12 +42,6 @@ public class ApplicationConfigurable implements SearchableConfigurable, CodeComp
     @Override
     public String getId() {
         return "MarkdownNavigator.Settings.Application";
-    }
-
-    @Nullable
-    @Override
-    public Runnable enableSearch(String option) {
-        return null;
     }
 
     @Nls
@@ -83,7 +76,7 @@ public class ApplicationConfigurable implements SearchableConfigurable, CodeComp
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         // save update stream
         getForm().apply();
     }

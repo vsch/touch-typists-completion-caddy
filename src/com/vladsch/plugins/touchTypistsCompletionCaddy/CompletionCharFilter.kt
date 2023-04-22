@@ -14,9 +14,10 @@ import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.containers.ContainerUtil
 
 class CompletionCharFilter : CharFilter() {
+
     private val settings = ApplicationSettings.getInstance()
 
-    override fun acceptChar(c: Char, prefixLength: Int, lookup: Lookup): CharFilter.Result? {
+    override fun acceptChar(c: Char, prefixLength: Int, lookup: Lookup): Result? {
         if (!settings.isDisableAutoPopupCompletionsOnSpace) return null
         if (!settings.onSpaceType.isEnabledOn(c, settings.spaceAndList)) return null
 
@@ -30,7 +31,6 @@ class CompletionCharFilter : CharFilter() {
         if (project.isDefault) return null
 
         val pluginProject = PluginProject.getInstance(project)
-//        val completionParameters = pluginProject.completionParameters
 
         if (pluginProject.isAutoPopup && !pluginProject.isUserItemSelection) {
             LOG.debug("CompletionCharFilter")
@@ -66,7 +66,9 @@ class CompletionCharFilter : CharFilter() {
                         null
                     }
 
-                if (language != null && ApplicationSettings.getLanguageSet(settings.onlyForList, true).contains(language.displayName.trim().toLowerCase())) {
+                if (language != null && ApplicationSettings.getLanguageSet(settings.onlyForList, true)
+                        .contains(language.displayName.trim().toLowerCase())
+                ) {
                     // TODO: implement options to select prefix
                     // val initializationContext = pluginProject.initializationContext ?: return null
                     // val lookupString = item.lookupString
@@ -81,8 +83,10 @@ class CompletionCharFilter : CharFilter() {
     }
 
     companion object {
-        private val LOG = Logger.getInstance("com.vladsch.plugins.touchTypistsCompletionCaddy")
-        //        val COMPLETION_CHAR_FILTERING: ClassConditionKey<MdPreventPartialCompletion> = ClassConditionKey.create(MdPreventPartialCompletion::class.java)
+
+        private val LOG = Logger.getInstance(PluginProject.PLUGIN_ID)
+/*
+        val COMPLETION_CHAR_FILTERING: ClassConditionKey<MdPreventPartialCompletion> = ClassConditionKey.create(MdPreventPartialCompletion::class.java)
 
         private fun willHaveMatchAfterAppendingChar(lookup: LookupImpl, c: Char): Boolean {
             return ContainerUtil.exists(lookup.items) { matchesAfterAppendingChar(lookup, it, c) }
@@ -92,5 +96,6 @@ class CompletionCharFilter : CharFilter() {
             val matcher = lookup.itemMatcher(item)
             return matcher.cloneWithPrefix(matcher.prefix + lookup.additionalPrefix + c).prefixMatches(item)
         }
+*/
     }
 }
