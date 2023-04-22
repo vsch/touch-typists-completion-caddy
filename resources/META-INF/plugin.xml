@@ -23,6 +23,12 @@
 
     <change-notes><![CDATA[
         <div xmlns="http://www.w3.org/1999/html">
+            <h3>Version 1.7.0 - Compatibility Release (2023-04-22)</h3>
+            <ul>
+                <li>Fix: deprecated API usage.</li>
+                <li>Change: minimum IDE version to 2020.3</li>
+                <li>Fix: migrate to gradle build system.</li>
+            </ul>
             <h3>Version 1.6 - Compatibility Release</h3>
             <ul>
                 <li>Fix: 2021 configurable exception</li>

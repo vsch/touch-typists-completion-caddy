@@ -2,8 +2,6 @@ package com.vladsch.plugins.touchTypistsCompletionCaddy
 
 import com.intellij.codeInsight.lookup.CharFilter
 import com.intellij.codeInsight.lookup.Lookup
-import com.intellij.codeInsight.lookup.LookupElement
-import com.intellij.codeInsight.lookup.impl.LookupImpl
 import com.intellij.lang.Language
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.ex.EditorEx
@@ -11,7 +9,6 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.testFramework.LightVirtualFile
-import com.intellij.util.containers.ContainerUtil
 
 class CompletionCharFilter : CharFilter() {
 
@@ -85,17 +82,17 @@ class CompletionCharFilter : CharFilter() {
     companion object {
 
         private val LOG = Logger.getInstance(PluginProject.PLUGIN_ID)
-/*
-        val COMPLETION_CHAR_FILTERING: ClassConditionKey<MdPreventPartialCompletion> = ClassConditionKey.create(MdPreventPartialCompletion::class.java)
-
-        private fun willHaveMatchAfterAppendingChar(lookup: LookupImpl, c: Char): Boolean {
-            return ContainerUtil.exists(lookup.items) { matchesAfterAppendingChar(lookup, it, c) }
-        }
-
-        private fun matchesAfterAppendingChar(lookup: LookupImpl, item: LookupElement, c: Char): Boolean {
-            val matcher = lookup.itemMatcher(item)
-            return matcher.cloneWithPrefix(matcher.prefix + lookup.additionalPrefix + c).prefixMatches(item)
-        }
-*/
+        /*
+                val COMPLETION_CHAR_FILTERING: ClassConditionKey<MdPreventPartialCompletion> = ClassConditionKey.create(MdPreventPartialCompletion::class.java)
+        
+                private fun willHaveMatchAfterAppendingChar(lookup: LookupImpl, c: Char): Boolean {
+                    return ContainerUtil.exists(lookup.items) { matchesAfterAppendingChar(lookup, it, c) }
+                }
+        
+                private fun matchesAfterAppendingChar(lookup: LookupImpl, item: LookupElement, c: Char): Boolean {
+                    val matcher = lookup.itemMatcher(item)
+                    return matcher.cloneWithPrefix(matcher.prefix + lookup.additionalPrefix + c).prefixMatches(item)
+                }
+        */
     }
 }
